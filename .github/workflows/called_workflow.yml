@@ -28,7 +28,9 @@ jobs:
             cd testing_git_team/main-caller
             git config user.email "fikrinursyahbani@gmail.com"
             git config user.name "mohammadfikrinursyahbani"
-            
+
+            git pull origin main --rebase
+
             if ls | grep $TREE_REPOSITORY
             then
               git subtree pull --prefix=$TREE_REPOSITORY $LINK_TREE_REPOSITORY main --squash
