@@ -6,23 +6,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      tree_repository: ${{ github.event.client_payload.tree_repository}}
+      link_tree_repository: ${{ github.event.client_payload.link_tree_repository }}
 
     steps:
       - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+      
       - name: Pull Subtree from Repository A
-        env:
-          TREE_REPOSITORY: ${{ github.event.client_payload.tree_repository }}
-          LINK_TREE_REPOSITORY: ${{ github.event.client_payload.link_tree_repository }}
-        run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -p ${{ secrets.PORT }} << EOF
-            cd testing_git_team/main-caller
-            if [ -d "\$TREE_REPOSITORY" ]; then
-              git subtree pull --prefix=\$TREE_REPOSITORY \$LINK_TREE_REPOSITORY main --squash
-            else
-              git subtree add --prefix=\$TREE_REPOSITORY \$LINK_TREE_REPOSITORY main --squash
-            fi
-            git push origin main
-          EOF
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          envs: tree_repository, link_tree_repository
+          script: |
+            echo "$tree_repository"
+            echo "$link_tree_repository"
