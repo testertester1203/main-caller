@@ -6,9 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      tree_repository: ${{ github.event.client_payload.tree_repository}}
-      link_tree_repository: ${{ github.event.client_payload.link_tree_repository }}
 
     steps:
       - name: Use Node.js 20
@@ -18,6 +15,9 @@ jobs:
       
       - name: Pull Subtree from Repository A
         uses: appleboy/ssh-action@master
+        env:
+          tree_repository: ${{ github.event.client_payload.tree_repository}}
+          link_tree_repository: ${{ github.event.client_payload.link_tree_repository }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
