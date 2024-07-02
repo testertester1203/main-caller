@@ -24,10 +24,15 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd testing_git_team/main-caller
-            if [ -d "$tree_repository" ]; then
-              git subtree pull --prefix=$tree_repository $link_tree_repository main --squash
+            if [ -d "testing_git_team/main-caller" ]; then
+              cd testing_git_team/main-caller
             else
-              git subtree add --prefix=$tree_repository $link_tree_repository main --squash
+              echo "Directory testing_git_team/main-caller does not exist"
+              exit 1
             fi
-            cd main-caller && git push origin main
+            if [ -d "${tree_repository}" ]; then
+              git subtree pull --prefix="${tree_repository}" "${link_tree_repository}" main --squash
+            else
+              git subtree add --prefix="${tree_repository}" "${link_tree_repository}" main --squash
+            fi
+            git push origin main
