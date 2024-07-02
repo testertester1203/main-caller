@@ -22,7 +22,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd testing_git_team/main-caller
-            if [ -d "$tree_repository" ]; then
+            if [ -d "sub-caller" ]; then
               git subtree pull --prefix=sub-caller git@github.com:mohammadfikrinursyahbani/sub-caller.git main --squash
             else
               git subtree add --prefix=sub-caller git@github.com:mohammadfikrinursyahbani/sub-caller.git main --squash
