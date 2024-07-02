@@ -9,7 +9,8 @@ jobs:
     env:
       nama: ${{ github.event.client_payload.nama }}
       repository: ${{ github.event.client_payload.repository }}
-      link_repository: ${{ github.event.client_payload.link_repository }}
+      tree_repository: ${{ github.event.client_payload.tree_repository}}
+      link_tree_repository: ${{ github.event.client_payload.link_tree_repository }}
 
     steps:
       - name: Use Node.js 20
@@ -25,10 +26,10 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd testing_git_team/main-caller
-            if [ -d "$repository" ]; then
-              git subtree pull --prefix=$repository $link_repository main --squash
+            cd testing_git_team/$repository
+            if [ -d "$tree_repository" ]; then
+              git subtree pull --prefix=$tree_repository $link_tree_repository main --squash
             else
-              git subtree add --prefix=$repository $link_repository main --squash
+              git subtree add --prefix=$tree_repository $link_tree_repository main --squash
             fi
-            cd testing_git_team/main-caller && git push origin main
+            cd testing_git_team/$repository && git push origin main
