@@ -1,7 +1,7 @@
-name: CalledWorkFlow
+name: main-called
 on:
   repository_dispatch:
-    types: [CalledWorkFlow]
+    types: [panggilan]
 
 
 jobs:
