@@ -1,0 +1,38 @@
+name: CallerWorkFlow
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      pat_token : ${{ secrets.PAT_TOKEN_TEAM_TESTING }}
+      workflow_triger_token : 'panggilan'
+      git_akun : 'testertester1203'
+      repository : 'main-caller'
+      link_repository : 'https://github.com/testertester1203/main-caller.git'
+
+    steps:
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd "$GITHUB_WORKSPACE/PythonScripts/"
+          python -m pip install --upgrade pip
+          pip install -r requirement.txt
+
+      - name: Trigger the Workflow
+        run: |
+          cd "$GITHUB_WORKSPACE/PythonScripts/"
+          python $GITHUB_WORKSPACE/PythonScripts/triggerscript.py  ${{ env.pat_token }}  ${{ env.git_akun}}  ${{ env.repository }}  ${{ env.workflow_triger_token }}  ${{ env.link_repository }}
