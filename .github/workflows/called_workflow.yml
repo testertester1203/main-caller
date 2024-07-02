@@ -25,5 +25,12 @@ jobs:
           port: ${{ secrets.PORT }}
           envs: TREE_REPOSITORY, LINK_TREE_REPOSITORY
           script: |
-            echo $TREE_REPOSITORY
-            echo $LINK_TREE_REPOSITORY
+            cd testing_git_team/main-caller
+            if ls | grep $TREE_REPOSITORY
+            then
+              git subtree pull --prefix=$TREE_REPOSITORY $LINK_TREE_REPOSITORY main --squash
+            else
+              git subtree add --prefix=$TREE_REPOSITORY $LINK_TREE_REPOSITORY main --squash
+            fi
+            
+            git push origin main
