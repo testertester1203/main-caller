@@ -1,7 +1,7 @@
 name: CalledWorkFlow
 on:
   repository_dispatch:
-    types: ${{[ github.event.event_type]}}
+    types: [CalledWorkFlow]
 
 jobs:
   build:
