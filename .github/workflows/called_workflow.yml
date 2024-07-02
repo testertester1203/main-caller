@@ -16,14 +16,14 @@ jobs:
       - name: Pull Subtree from Repository A
         uses: appleboy/ssh-action@master
         env:
-          tree_repository: ${{ github.event.client_payload.tree_repository}}
-          link_tree_repository: ${{ github.event.client_payload.link_tree_repository }}
+          TREE_REPOSITORY: ${{ github.event.client_payload.tree_repository}}
+          LINK_TREE_REPOSITORY: ${{ github.event.client_payload.link_tree_repository }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          envs: tree_repository, link_tree_repository
+          envs: TREE_REPOSITORY, LINK_TREE_REPOSITORY
           script: |
-            echo "$tree_repository"
-            echo "$link_tree_repository"
+            echo $TREE_REPOSITORY
+            echo $LINK_TREE_REPOSITORY
