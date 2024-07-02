@@ -12,23 +12,6 @@ jobs:
       link_repository: ${{ github.event.client_payload.link_repository }}
 
     steps:
-      - name: Use Node.js 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      
-      - name: Pull Subtree from Repository A
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            cd testing_git_team/main_caller
-            if [ -d "$repository" ]; then
-              git subtree pull --prefix=$repository $link_repository main --squash
-            else
-              git subtree add --prefix=$repository $link_repository main --squash
-            fi
-            cd testing_git_team/main_caller && git push origin main
+      - uses: actions/checkout@v3
+      - name: Run a oneline script
+        run: echo Berhasil line 1
