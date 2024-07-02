@@ -3,15 +3,22 @@ on:
   repository_dispatch:
     types: [CalledWorkFlow]
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      nama: ${{ github.event.client_payload.nama }}
-      repository: ${{ github.event.client_payload.repository }}
-      link_repository: ${{ github.event.client_payload.link_repository }}
+      parameter1: ${{ github.event.client_payload.parameter1 }}
+      parameter2: ${{ github.event.client_payload.parameter2 }}
 
     steps:
       - uses: actions/checkout@v3
       - name: Run a oneline script
         run: echo Berhasil line 1
+
+      - name: Run a multiline script
+        run: |
+          echo Berhasil line 1
+          echo Berhasil line 2
+          echo $parameter1
+          echo $parameter1
