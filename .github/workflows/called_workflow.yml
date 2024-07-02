@@ -6,9 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      tree_repository: ${{ github.event.client_payload.tree_repository}}
-      link_tree_repository: ${{ github.event.client_payload.link_tree_repository }}
 
     steps:
       - name: Use Node.js 20
@@ -23,10 +20,11 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
+          envs: tree_repository=${{ github.event.client_payload.tree_repository }}, link_tree_repository=${{ github.event.client_payload.link_tree_repository }}
           script: |
-            if [ -d "${{ tree_repository }}" ]; then
-              git subtree pull --prefix="${{ tree_repository }}" "${{ link_tree_repository }}" main --squash
+            if [ -d "$tree_repository" ]; then
+              git subtree pull --prefix="$tree_repository" "$link_tree_repository" main --squash
             else
-              git subtree add --prefix="${{ tree_repository }}" "${{ link_tree_repository }}" main --squash
+              git subtree add --prefix="$tree_repository" "$link_tree_repository" main --squash
             fi
             git push origin main
